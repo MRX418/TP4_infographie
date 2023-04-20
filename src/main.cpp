@@ -86,27 +86,28 @@ void calculerPhysique( )
         }
 
         // faire les transformations de retour (rétroaction)
-        // ... (MODIFIER)
-        // glBindBufferBase(...);
-        // ...
-        // glBindVertexArray( ... );         // sélectionner le second VAO
+        glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, vbo[1]); //Informer OpenGL du tampon pour la rétroaction
+        glBindVertexArray(vao[1]); // sélectionner le second VAO
         // se préparer
-        // glBindBuffer( ... );
-        // glVertexAttribPointer( locVertexRetroaction, 3, GL_FLOAT, GL_FALSE, sizeof(Particule), reinterpret_cast<void*>( offsetof(Particule,position) ) );
-        // glVertexAttribPointer( locColorRetroaction, 4, GL_FLOAT, GL_FALSE, sizeof(Particule), reinterpret_cast<void*>( offsetof(Particule,couleur) ) );
-        // glVertexAttribPointer( locvitesseRetroaction, 3, GL_FLOAT, GL_FALSE, sizeof(Particule), reinterpret_cast<void*>( offsetof(Particule,vitesse) ) );
-        // glVertexAttribPointer( loctempsDeVieRestantRetroaction, 1, GL_FLOAT, GL_FALSE, sizeof(Particule), reinterpret_cast<void*>( offsetof(Particule,tempsDeVieRestant) ) );
+        glBindBuffer(GL_ARRAY_BUFFER, vbo[0]); 
+        glVertexAttribPointer( locVertexRetroaction, 3, GL_FLOAT, GL_FALSE, sizeof(Particule), reinterpret_cast<void*>( offsetof(Particule,position) ) );
+        glVertexAttribPointer( locColorRetroaction, 4, GL_FLOAT, GL_FALSE, sizeof(Particule), reinterpret_cast<void*>( offsetof(Particule,couleur) ) );
+        glVertexAttribPointer( locvitesseRetroaction, 3, GL_FLOAT, GL_FALSE, sizeof(Particule), reinterpret_cast<void*>( offsetof(Particule,vitesse) ) );
+        glVertexAttribPointer( loctempsDeVieRestantRetroaction, 1, GL_FLOAT, GL_FALSE, sizeof(Particule), reinterpret_cast<void*>( offsetof(Particule,tempsDeVieRestant) ) );
 
 
         // débuter la requête (si impression)
         if ( Etat::impression )
             glBeginQuery( GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN, requete );
+            glEnable(GL_RASTERIZER_DISCARD);//désactiver le tramage 
+            //dessiner les points
+            glBeginTransformFeedback(GL_POINTS);
+            glDrawArrays(GL_POINTS, 0, MAXNPARTICULES);
+            glEndTransformFeedback();
+            //fin dessin
+            glDisable(GL_RASTERIZER_DISCARD);//réactiver le tramage 
+            glBindVertexArray(0); // désélectionner le VAO
 
-        // « dessiner » pour la rétroaction
-        // ... (MODIFIER)
-        // ...
-        // glDrawArrays( GL_POINTS, ... );
-        // ...
 
         // terminer la requête (si impression)
         if ( Etat::impression )
@@ -340,8 +341,9 @@ void chargerNuanceurs()
         }
 
         // À MODIFIER (partie 1)
-        //const GLchar* vars[] = { ... };
-        //glTransformFeedbackVaryings( progRetroaction, sizeof(vars)/sizeof(vars[0]), vars, GL_INTERLEAVED_ATTRIBS );
+        //les variables a recevoir
+        const GLchar* vars[] = { "VertexMod","ColorMod","vitesseMod", "tempsDeVieRestantMod" }; 
+        glTransformFeedbackVaryings( progRetroaction, sizeof(vars)/sizeof(vars[0]), vars, GL_INTERLEAVED_ATTRIBS );
 
         // faire l'édition des liens du programme
         glLinkProgram( progRetroaction );

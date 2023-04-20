@@ -61,11 +61,11 @@ void main( void )
     else
     {
         // avancer la particule (méthode de Euler)
-        VertexMod = Vertex; // modifier ...
+        VertexMod = Vertex + dt * vitesse; // modifier ...
         vitesseMod = vitesse;
 
         // diminuer son temps de vie
-        tempsDeVieRestantMod = tempsDeVieRestant; // modifier ...
+        tempsDeVieRestantMod = tempsDeVieRestant - dt; // modifier ...
 
         // garder la couleur courante
         ColorMod = Color;
@@ -79,10 +79,10 @@ void main( void )
         // ...
 
         // appliquer la gravité
-        // ...
+        vitesseMod.z -= 0.5 * gravite * dt;
     }
 
     // Mettre un test bidon afin que l'optimisation du compilateur n'élimine pas les attributs dt, gravite, tempsDeVieMax posPuits et bDim.
     // Vous ENLEVEREZ cet énoncé inutile!
-    if ( dt+bDim.x+gravite+tempsDeVieMax+posPuits.x < -100000 ) tempsDeVieRestantMod += .000001;
+    // if ( dt+bDim.x+gravite+tempsDeVieMax+posPuits.x < -100000 ) tempsDeVieRestantMod += .000001;
 }
