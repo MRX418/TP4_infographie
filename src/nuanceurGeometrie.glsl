@@ -30,9 +30,12 @@ out Attribs {
 
 // la hauteur minimale en-dessous de laquelle les lutins ne tournent plus (partie 3)
 const float hauteurInerte = 8.0;
-//ADDEEEEED
-vec2 rotate(vec2 v, float angle) {
-	return mat2( cos(angle) , - sin(angle) ,  sin(angle) , cos(angle) ) * v;
+
+//reference: https://math.stackexchange.com/questions/2093314/rotation-matrix-of-rotation-around-a-point-other-than-the-origin
+vec2 rotationCentre(vec2 coord, float angle) {
+    float rotatedX = cos(angle) * coord.x - sin(angle) * coord.y;
+    float rotatedY = sin(angle) * coord.x + cos(angle) * coord.y;
+	return vec2(rotatedX, rotatedY);
 }
 void main()
 {
@@ -42,7 +45,7 @@ void main()
     coins[2] = vec2(  0.5,  0.5 );
     coins[3] = vec2(  0.5, -0.5 );
 
- // à partir du point, créer quatre points qui servent de coin aux deux triangles
+    // à partir du point, créer quatre points qui servent de coin aux deux triangles
     for ( int i = 0 ; i < 4 ; ++i )
     {
         // on positionne successivement aux quatre coins
@@ -56,8 +59,6 @@ void main()
         // assigner la taille des points (en pixels)
         gl_PointSize = gl_in[0].gl_PointSize;
 
-        vec4 pos = vec4( gl_in[0].gl_Position.xy + gl_PointSize * decalage, gl_in[0].gl_Position.zw );
-        gl_Position = matrProj * pos;    // on termine la transformation débutée dans le nuanceur de sommets
 
         // assigner la couleur courante
         AttribsOut.couleur = AttribsIn[0].couleur;
@@ -72,8 +73,10 @@ void main()
             // }
         }
         else if(texnumero==2){
-            decalage = rotate(coins[i], 6.0 * AttribsIn[0].tempsDeVieRestant);
+            decalage = rotationCentre(coins[i], 6.0 * AttribsIn[0].tempsDeVieRestant);
         }
+        vec4 pos = vec4( gl_in[0].gl_Position.xy + gl_PointSize * decalage, gl_in[0].gl_Position.zw );
+        gl_Position = matrProj * pos;    // on termine la transformation débutée dans le nuanceur de sommets
         EmitVertex();
     }
 }
