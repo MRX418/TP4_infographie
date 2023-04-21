@@ -19,7 +19,7 @@ layout (std140) uniform varsUnif
 in Attribs {
     vec4 couleur;
     float tempsDeVieRestant;
-    //float sens; // du vol (partie 3)
+    float sens; // du vol (partie 3)
     //float hauteur; // de la particule dans le repère du monde (partie 3)
 } AttribsIn[];
 
@@ -30,6 +30,7 @@ out Attribs {
 
 // la hauteur minimale en-dessous de laquelle les lutins ne tournent plus (partie 3)
 const float hauteurInerte = 8.0;
+//ADDEEEEED
 vec2 rotate(vec2 v, float angle) {
 	return mat2( cos(angle) , - sin(angle) ,  sin(angle) , cos(angle) ) * v;
 }
@@ -51,6 +52,9 @@ void main()
             int num = int ( mod ( 18.0 * AttribsIn[0].tempsDeVieRestant , nlutins ) ); // 18 Hz
             AttribsOut.texCoord.s += num;
             AttribsOut.texCoord.s /= nlutins ;
+            // if( AttribsIn[0].sens == -1.0 ) { 
+            //     decalage = reflect(decalage, vec2(1, 0));
+            // }
         }
         else if(texnumero==2){
             decalage = rotate(coins[i], 6.0 * AttribsIn[0].tempsDeVieRestant);

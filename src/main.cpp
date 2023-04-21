@@ -99,14 +99,14 @@ void calculerPhysique( )
         // débuter la requête (si impression)
         if ( Etat::impression )
             glBeginQuery( GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN, requete );
-            glEnable(GL_RASTERIZER_DISCARD);//désactiver le tramage 
-            //dessiner les points
-            glBeginTransformFeedback(GL_POINTS);
-            glDrawArrays(GL_POINTS, 0, MAXNPARTICULES);
-            glEndTransformFeedback();
-            //fin dessin
-            glDisable(GL_RASTERIZER_DISCARD);//réactiver le tramage 
-            glBindVertexArray(0); // désélectionner le VAO
+            
+        glEnable(GL_RASTERIZER_DISCARD);//désactiver le tramage 
+        //dessiner les points
+        glBeginTransformFeedback(GL_POINTS);
+        glDrawArrays(GL_POINTS, 0, Etat::nparticules);
+        glEndTransformFeedback();
+        //fin dessin
+        glDisable(GL_RASTERIZER_DISCARD);//réactiver le tramage 
 
 
         // terminer la requête (si impression)
@@ -539,7 +539,7 @@ void FenetreTP::afficherScene()
     if ( Etat::afficheAxes ) FenetreTP::afficherAxes( 30. );
 
     // afficher les particules
-    //glActiveTexture( GL_TEXTURE0 ); // activer la texture '0' (valeur de défaut)
+    // glActiveTexture( GL_TEXTURE0 ); // activer la texture '0' (valeur de défaut)
     glUseProgram( prog );
     glUniformMatrix4fv( locmatrProj, 1, GL_FALSE, matrProj );
     glUniformMatrix4fv( locmatrVisu, 1, GL_FALSE, matrVisu );

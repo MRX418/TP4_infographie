@@ -59,6 +59,7 @@ void main( void )
         ColorMod =  vec4( mix( COULMIN, COULMAX, aleatoire() ),
                            mix( COULMIN, COULMAX, aleatoire() ),
                            mix( COULMIN, COULMAX, aleatoire() ), 1.0 ); // à modifier
+
     }
     else
     {
@@ -90,7 +91,7 @@ void main( void )
           vitesseMod = reflect( vitesse , vec3(0, 0, 1) );
          }
         // appliquer la gravité
-        vitesseMod.z -= 0.5 * gravite * dt;
+        vitesseMod.z -= gravite * dt;
     }
 
     // Mettre un test bidon afin que l'optimisation du compilateur n'élimine pas les attributs dt, gravite, tempsDeVieMax posPuits et bDim.
