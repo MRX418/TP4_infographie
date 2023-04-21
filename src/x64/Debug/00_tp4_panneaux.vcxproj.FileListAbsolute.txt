@@ -1,2 +1,0 @@
-C:\Users\nadaa\Desktop\INF2705\TP4_infographie\src\x64\Debug\glew32.dll
-C:\Users\nadaa\Desktop\INF2705\TP4_infographie\src\x64\Debug\00_tp4_panneaux.exe
