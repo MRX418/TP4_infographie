@@ -58,17 +58,17 @@ void main( void )
         // couleur (pseudo) aléatoire par interpolation linéaire entre COULMIN et COULMAX
         ColorMod =  vec4( mix( COULMIN, COULMAX, aleatoire() ),
                            mix( COULMIN, COULMAX, aleatoire() ),
-                           mix( COULMIN, COULMAX, aleatoire() ), 1.0 ); // à modifier
+                           mix( COULMIN, COULMAX, aleatoire() ), 1.0 );
 
     }
     else
     {
         // avancer la particule (méthode de Euler)
-        VertexMod = Vertex + dt * vitesse; // modifier ...
+        VertexMod = Vertex + dt * vitesse; 
         vitesseMod = vitesse;
 
         // diminuer son temps de vie
-        tempsDeVieRestantMod = tempsDeVieRestant - dt; // modifier ...
+        tempsDeVieRestantMod = tempsDeVieRestant - dt;
 
         // garder la couleur courante
         ColorMod = Color;
@@ -84,17 +84,15 @@ void main( void )
             vec3 vitReflechieSphUnitaire = reflect ( vitSphUnitaire , N );
             vitesseMod = vitReflechieSphUnitaire / bDim ;
         }
+
         // gérer la ccollision avec le sol
         // hauteur minimale à laquelle une collision avec le plancher survient
         float hauteurPlancher = 0.5 * pointsize;
-         if ( VertexMod.z <= hauteurPlancher ) { 
-          vitesseMod = reflect( vitesse , vec3(0, 0, 1) );
-         }
+        if ( VertexMod.z <= hauteurPlancher ) { 
+            vitesseMod = reflect( vitesse , vec3(0, 0, 1) );
+        }
+        
         // appliquer la gravité
         vitesseMod.z -= gravite * dt;
     }
-
-    // Mettre un test bidon afin que l'optimisation du compilateur n'élimine pas les attributs dt, gravite, tempsDeVieMax posPuits et bDim.
-    // Vous ENLEVEREZ cet énoncé inutile!
-    // if ( dt+bDim.x+gravite+tempsDeVieMax+posPuits.x < -100000 ) tempsDeVieRestantMod += .000001;
 }

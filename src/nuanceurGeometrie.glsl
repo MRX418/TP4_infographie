@@ -45,8 +45,23 @@ void main()
  // à partir du point, créer quatre points qui servent de coin aux deux triangles
     for ( int i = 0 ; i < 4 ; ++i )
     {
-        vec2 decalage = coins[i]; // on positionne successivement aux quatre coins
+        // on positionne successivement aux quatre coins
+        vec2 decalage = coins[i]; 
+
         AttribsOut.texCoord = coins[i] + vec2( 0.5, 0.5 ); // on utilise coins[] pour définir des coordonnées de texture
+
+        // assigner la position du point
+        gl_Position = matrProj * gl_in[0].gl_Position;
+
+        // assigner la taille des points (en pixels)
+        gl_PointSize = gl_in[0].gl_PointSize;
+
+        vec4 pos = vec4( gl_in[0].gl_Position.xy + gl_PointSize * decalage, gl_in[0].gl_Position.zw );
+        gl_Position = matrProj * pos;    // on termine la transformation débutée dans le nuanceur de sommets
+
+        // assigner la couleur courante
+        AttribsOut.couleur = AttribsIn[0].couleur;
+
         if(texnumero==1){
             const float nlutins = 16.0; // 16 positions de vol dans la texture
             int num = int ( mod ( 18.0 * AttribsIn[0].tempsDeVieRestant , nlutins ) ); // 18 Hz
@@ -59,15 +74,6 @@ void main()
         else if(texnumero==2){
             decalage = rotate(coins[i], 6.0 * AttribsIn[0].tempsDeVieRestant);
         }
-        // assigner la position du point
-        gl_Position = matrProj * gl_in[0].gl_Position;
-        // assigner la taille des points (en pixels)
-        gl_PointSize = gl_in[0].gl_PointSize;
-
-        vec4 pos = vec4( gl_in[0].gl_Position.xy + gl_PointSize * decalage, gl_in[0].gl_Position.zw );
-        gl_Position = matrProj * pos;    // on termine la transformation débutée dans le nuanceur de sommets
-        // assigner la couleur courante
-        AttribsOut.couleur = AttribsIn[0].couleur;
         EmitVertex();
     }
 }
