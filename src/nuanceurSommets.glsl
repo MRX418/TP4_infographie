@@ -22,7 +22,7 @@ out Attribs {
     vec4 couleur;
     float tempsDeVieRestant;
     float sens; // du vol (partie 3)
-    //float hauteur; // de la particule dans le repère du monde (partie 3)
+    float hauteur; // de la particule dans le repère du monde (partie 3)
 } AttribsOut;
 
 void main( void )
@@ -38,5 +38,6 @@ void main( void )
     // assigner la taille des points (en pixels)
     gl_PointSize = pointsize;
 
-    // AttribsOut.sens = sign((matrVisu * matrModel * vitesse).x);
+    AttribsOut.sens = sign((matrModel * matrVisu* vec4(vitesse, 0)).x);
+    AttribsOut.hauteur = (matrModel* Vertex).z;
 }

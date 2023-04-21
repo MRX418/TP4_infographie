@@ -83,6 +83,7 @@ void main( void )
             vec3 N = posSphUnitaire / dist ; // normaliser N
             vec3 vitReflechieSphUnitaire = reflect ( vitSphUnitaire , N );
             vitesseMod = vitReflechieSphUnitaire / bDim ;
+            vitesseMod /= 2;
         }
 
         // gérer la ccollision avec le sol
@@ -90,6 +91,7 @@ void main( void )
         float hauteurPlancher = 0.5 * pointsize;
         if ( VertexMod.z <= hauteurPlancher ) { 
             vitesseMod = reflect( vitesse , vec3(0, 0, 1) );
+            vitesseMod /= 2;
         }
         
         // appliquer la gravité

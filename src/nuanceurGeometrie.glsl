@@ -20,7 +20,7 @@ in Attribs {
     vec4 couleur;
     float tempsDeVieRestant;
     float sens; // du vol (partie 3)
-    //float hauteur; // de la particule dans le repère du monde (partie 3)
+    float hauteur; // de la particule dans le repère du monde (partie 3)
 } AttribsIn[];
 
 out Attribs {
@@ -62,18 +62,20 @@ void main()
 
         // assigner la couleur courante
         AttribsOut.couleur = AttribsIn[0].couleur;
-
         if(texnumero==1){
             const float nlutins = 16.0; // 16 positions de vol dans la texture
-            int num = int ( mod ( 18.0 * AttribsIn[0].tempsDeVieRestant , nlutins ) ); // 18 Hz
+            int num =0;
+            if(AttribsIn[0].hauteur >= hauteurInerte){
+                 num = int ( mod ( 18.0 * AttribsIn[0].tempsDeVieRestant , nlutins ) );// 18 Hz
+            } 
             AttribsOut.texCoord.s += num;
             AttribsOut.texCoord.s /= nlutins ;
-            // if( AttribsIn[0].sens == -1.0 ) { 
-            //     decalage = reflect(decalage, vec2(1, 0));
-            // }
+            AttribsOut.texCoord.s *= AttribsIn[0].sens;
         }
         else if(texnumero==2){
-            decalage = rotationCentre(coins[i], 6.0 * AttribsIn[0].tempsDeVieRestant);
+            if(AttribsIn[0].hauteur >= hauteurInerte){
+               decalage = rotationCentre(coins[i], 6.0 * AttribsIn[0].tempsDeVieRestant);
+            }
         }
         vec4 pos = vec4( gl_in[0].gl_Position.xy + gl_PointSize * decalage, gl_in[0].gl_Position.zw );
         gl_Position = matrProj * pos;    // on termine la transformation débutée dans le nuanceur de sommets
