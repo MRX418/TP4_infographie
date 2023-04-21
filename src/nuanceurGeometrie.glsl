@@ -68,17 +68,13 @@ void main()
             case 1: 
                 nlutins = 16.0; 
             break;
-            case 2:
-                if(AttribsIn[0].hauteur >= hauteurInerte){
-                    decalage = rotationCentre(coins[i], 6.0 * AttribsIn[0].tempsDeVieRestant);
-                } 
-            break;
             case 3:
                 nlutins = 12.0;  
             break;
             case 4:
                 nlutins = 20.0; 
-            break; 
+            break;
+            case 2:
             case 5:  
                 if(AttribsIn[0].hauteur >= hauteurInerte){
                     decalage = rotationCentre(coins[i], 6.0 * AttribsIn[0].tempsDeVieRestant);
@@ -92,9 +88,7 @@ void main()
             }  
             AttribsOut.texCoord.s += num;
             AttribsOut.texCoord.s /= nlutins ;
-            if(texnumero == 1){
-                AttribsOut.texCoord.s *= AttribsIn[0].sens;
-            }
+            AttribsOut.texCoord.s *= AttribsIn[0].sens;
         }
 
         AttribsOut.couleur.a = clamp(AttribsIn[0].tempsDeVieRestant, 0  , 1);

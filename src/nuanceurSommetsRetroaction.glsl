@@ -44,7 +44,7 @@ void main( void )
         const float COULMAX = 0.9; // valeur maximale d'une composante de couleur lorsque la particule (re)naît
 
         // faire renaitre la particule au puits
-        VertexMod = posPuits; // à modifier
+        VertexMod = posPuits; 
 
         // assigner un vitesse (pseudo) aléatoire
         vitesseMod = vec3( mix( -25.0, 25.0, aleatoire() ),   // entre -25 et 25
@@ -53,7 +53,7 @@ void main( void )
         // vitesseMod = vec3( 0.0, 30.0, 50.0 ); //tester collision
 
         // nouveau temps de vie (pseudo) aléatoire
-        tempsDeVieRestantMod = mix( 0.0, tempsDeVieMax, aleatoire()); // à modifier pour une valeur entre 0 et tempsDeVieMax secondes
+        tempsDeVieRestantMod = mix( 0.0, tempsDeVieMax, aleatoire());
 
         // couleur (pseudo) aléatoire par interpolation linéaire entre COULMIN et COULMAX
         ColorMod =  vec4( mix( COULMIN, COULMAX, aleatoire() ),

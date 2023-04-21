@@ -1,7 +1,7 @@
 // Prénoms, noms et matricule des membres de l'équipe:
-// - Prénom1 NOM1 (matricule1)
-// - Prénom2 NOM2 (matricule2)
-#pragma message (": *************** Identifiez les membres de l'équipe dans le fichier 'main.cpp' et commentez cette ligne. ***************")
+// - nada ALAMI CHENTOUFI (2065241)
+// - haroun MILI (2144744)
+// #pragma message (": *************** Identifiez les membres de l'équipe dans le fichier 'main.cpp' et commentez cette ligne. ***************")
 
 #if defined(_WIN32) || defined(WIN32)
 #pragma warning ( disable : 4244 4305 )
@@ -221,8 +221,6 @@ void chargerTextures()
         glBindTexture( GL_TEXTURE_2D, Etat::textureMARIO );
         glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, largeur, hauteur, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels );
         glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
-        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
         //glGenerateMipmap( GL_TEXTURE_2D );
         glBindTexture( GL_TEXTURE_2D, 0 );
         delete[] pixels;
@@ -233,8 +231,6 @@ void chargerTextures()
         glBindTexture( GL_TEXTURE_2D, Etat::textureSMWMARIO );
         glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, largeur, hauteur, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels );
         glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
-        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
         //glGenerateMipmap( GL_TEXTURE_2D );
         glBindTexture( GL_TEXTURE_2D, 0 );
         delete[] pixels;
@@ -539,7 +535,7 @@ void afficherModele()
     glVertexAttribPointer( locvitesse, 3, GL_FLOAT, GL_FALSE, sizeof(Particule), reinterpret_cast<void*>( offsetof(Particule,vitesse) ) );
     glVertexAttribPointer( loctempsDeVieRestant, 1, GL_FLOAT, GL_FALSE, sizeof(Particule), reinterpret_cast<void*>( offsetof(Particule,tempsDeVieRestant) ) );
 
-    switch ( Etat::texnumero ) // 0-aucune, 1-oiseau, 2-flocon
+    switch ( Etat::texnumero ) // 0-aucune, 1-oiseau, 2-flocon 3-mario 4-smw_mario 5-soleil
     {
     default: glBindTexture( GL_TEXTURE_2D, 0 ); break;
     case 1: glBindTexture( GL_TEXTURE_2D, Etat::textureOISEAU ); break;
