@@ -44,7 +44,7 @@ void main( void )
         const float COULMAX = 0.9; // valeur maximale d'une composante de couleur lorsque la particule (re)naît
 
         // faire renaitre la particule au puits
-        VertexMod = vec3(0.0); // à modifier
+        VertexMod = posPuits; // à modifier
 
         // assigner un vitesse (pseudo) aléatoire
         vitesseMod = vec3( mix( -25.0, 25.0, aleatoire() ),   // entre -25 et 25
@@ -53,10 +53,12 @@ void main( void )
         //vitesseMod = vec3( 0.0, 30.0, 50.0 );
 
         // nouveau temps de vie (pseudo) aléatoire
-        tempsDeVieRestantMod = 0.0; // à modifier pour une valeur entre 0 et tempsDeVieMax secondes
+        tempsDeVieRestantMod = mix( 0.0, tempsDeVieMax, aleatoire()); // à modifier pour une valeur entre 0 et tempsDeVieMax secondes
 
         // couleur (pseudo) aléatoire par interpolation linéaire entre COULMIN et COULMAX
-        ColorMod = vec4(0.0); // à modifier
+        ColorMod =  vec4( mix( COULMIN, COULMAX, aleatoire() ),
+                           mix( COULMIN, COULMAX, aleatoire() ),
+                           mix( COULMIN, COULMAX, aleatoire() ), 1.0 ); // à modifier
     }
     else
     {
@@ -71,13 +73,22 @@ void main( void )
         ColorMod = Color;
 
         // gérer la collision avec la demi-sphère
-        // ...
-
+        vec3 posSphUnitaire = VertexMod / bDim ;
+        vec3 vitSphUnitaire = vitesseMod * bDim ;
+        float dist = length ( posSphUnitaire );
+        if ( dist >= 1.0 ) // ... la particule est sortie de la bulle
+        {
+            VertexMod = ( 2.0 - dist ) * VertexMod ;
+            vec3 N = posSphUnitaire / dist ; // normaliser N
+            vec3 vitReflechieSphUnitaire = reflect ( vitSphUnitaire , N );
+            vitesseMod = vitReflechieSphUnitaire / bDim ;
+        }
         // gérer la ccollision avec le sol
         // hauteur minimale à laquelle une collision avec le plancher survient
         const float hauteurPlancher = 3.0;
-        // ...
-
+         if ( VertexMod.z <= hauteurPlancher ) { 
+          vitesseMod = reflect( vitesse , vec3(0, 0, 1) );
+         }
         // appliquer la gravité
         vitesseMod.z -= 0.5 * gravite * dt;
     }
