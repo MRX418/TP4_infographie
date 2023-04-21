@@ -71,11 +71,13 @@ void main()
             AttribsOut.texCoord.s += num;
             AttribsOut.texCoord.s /= nlutins ;
             AttribsOut.texCoord.s *= AttribsIn[0].sens;
+            AttribsOut.couleur.a = clamp(AttribsIn[0].tempsDeVieRestant, 0  , 1);
         }
         else if(texnumero==2){
             if(AttribsIn[0].hauteur >= hauteurInerte){
                decalage = rotationCentre(coins[i], 6.0 * AttribsIn[0].tempsDeVieRestant);
             }
+            AttribsOut.couleur.a = clamp(AttribsIn[0].tempsDeVieRestant, 0  , 1);
         }
         vec4 pos = vec4( gl_in[0].gl_Position.xy + gl_PointSize * decalage, gl_in[0].gl_Position.zw );
         gl_Position = matrProj * pos;    // on termine la transformation débutée dans le nuanceur de sommets
