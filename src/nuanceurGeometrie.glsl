@@ -59,54 +59,49 @@ void main()
         // assigner la taille des points (en pixels)
         gl_PointSize = gl_in[0].gl_PointSize;
 
+        float nlutins; // les positions dans la texture
+        int num =0;
 
         // assigner la couleur courante
         AttribsOut.couleur = AttribsIn[0].couleur;
-        if(texnumero==1){
-            const float nlutins = 16.0; // 16 positions de vol dans la texture
-            int num =0;
+        switch (texnumero){
+            case 1: 
+                nlutins = 16.0; 
+            break;
+            case 2:
+                if(AttribsIn[0].hauteur >= hauteurInerte){
+                    decalage = rotationCentre(coins[i], 6.0 * AttribsIn[0].tempsDeVieRestant);
+                } 
+            break;
+            case 3:
+                nlutins = 12.0;  
+            break;
+            case 4:
+                nlutins = 20.0; 
+            break; 
+            case 5:  
+                if(AttribsIn[0].hauteur >= hauteurInerte){
+                    decalage = rotationCentre(coins[i], 6.0 * AttribsIn[0].tempsDeVieRestant);
+                } 
+            break;
+        }
+
+        if(texnumero !=2 && texnumero !=5){
             if(AttribsIn[0].hauteur >= hauteurInerte){
-                 num = int ( mod ( 18.0 * AttribsIn[0].tempsDeVieRestant , nlutins ) );// 18 Hz
-            } 
+                    num = int ( mod ( 18.0 * AttribsIn[0].tempsDeVieRestant , nlutins ) );// 18 Hz
+            }  
             AttribsOut.texCoord.s += num;
             AttribsOut.texCoord.s /= nlutins ;
-            AttribsOut.texCoord.s *= AttribsIn[0].sens;
-            AttribsOut.couleur.a = clamp(AttribsIn[0].tempsDeVieRestant, 0  , 1);
-        }
-        else if(texnumero==2){
-            if(AttribsIn[0].hauteur >= hauteurInerte){
-               decalage = rotationCentre(coins[i], 6.0 * AttribsIn[0].tempsDeVieRestant);
+            if(texnumero == 1){
+                AttribsOut.texCoord.s *= AttribsIn[0].sens;
             }
-            AttribsOut.couleur.a = clamp(AttribsIn[0].tempsDeVieRestant, 0  , 1);
         }
-        else if(texnumero==3){
-           const float nlutins = 12.0; // 12 positions de vol dans la texture
-            int num =0;
-            if(AttribsIn[0].hauteur >= hauteurInerte){
-                 num = int ( mod ( 18.0 * AttribsIn[0].tempsDeVieRestant , nlutins ) );// 18 Hz
-            } 
-            AttribsOut.texCoord.s += num;
-            AttribsOut.texCoord.s /= nlutins ;
-            AttribsOut.couleur.a = clamp(AttribsIn[0].tempsDeVieRestant, 0  , 1);
-        }
-        else if(texnumero==4){
-           const float nlutins = 20.0; // 16 positions de vol dans la texture
-            int num =0;
-            if(AttribsIn[0].hauteur >= hauteurInerte){
-                 num = int ( mod ( 18.0 * AttribsIn[0].tempsDeVieRestant , nlutins ) );// 18 Hz
-            } 
-            AttribsOut.texCoord.s += num;
-            AttribsOut.texCoord.s /= nlutins ;
-            AttribsOut.couleur.a = clamp(AttribsIn[0].tempsDeVieRestant, 0  , 1);
-        }
-        else if(texnumero==5){
-           if(AttribsIn[0].hauteur >= hauteurInerte){
-               decalage = rotationCentre(coins[i], 6.0 * AttribsIn[0].tempsDeVieRestant);
-            }
-            AttribsOut.couleur.a = clamp(AttribsIn[0].tempsDeVieRestant, 0  , 1);
-        }
+
+        AttribsOut.couleur.a = clamp(AttribsIn[0].tempsDeVieRestant, 0  , 1);
+
         vec4 pos = vec4( gl_in[0].gl_Position.xy + gl_PointSize * decalage, gl_in[0].gl_Position.zw );
         gl_Position = matrProj * pos;    // on termine la transformation débutée dans le nuanceur de sommets
+
         EmitVertex();
     }
 }
