@@ -162,7 +162,7 @@ void calculerPhysique( )
         // faire varier la texture utilisée
         if ( Etat::boucleTexture )
             if ( fmod( varsUnif.temps, 5 ) <= varsUnif.dt )
-                if ( ++Etat::texnumero > 3 ) Etat::texnumero = 1;
+                if ( ++Etat::texnumero > 5 ) Etat::texnumero = 1;
 
 #if 0
         // faire varier la taille de la boite
@@ -207,6 +207,42 @@ void chargerTextures()
     {
         glGenTextures( 1, &Etat::textureFLOCON );
         glBindTexture( GL_TEXTURE_2D, Etat::textureFLOCON );
+        glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, largeur, hauteur, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels );
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
+        //glGenerateMipmap( GL_TEXTURE_2D );
+        glBindTexture( GL_TEXTURE_2D, 0 );
+        delete[] pixels;
+    }
+    if ( ( pixels = ChargerImage( "textures/mario.bmp", largeur, hauteur ) ) != NULL )
+    {
+        glGenTextures( 1, &Etat::textureMARIO );
+        glBindTexture( GL_TEXTURE_2D, Etat::textureMARIO );
+        glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, largeur, hauteur, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels );
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
+        //glGenerateMipmap( GL_TEXTURE_2D );
+        glBindTexture( GL_TEXTURE_2D, 0 );
+        delete[] pixels;
+    }
+    if ( ( pixels = ChargerImage( "textures/smw_mario.bmp", largeur, hauteur ) ) != NULL )
+    {
+        glGenTextures( 1, &Etat::textureSMWMARIO );
+        glBindTexture( GL_TEXTURE_2D, Etat::textureSMWMARIO );
+        glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, largeur, hauteur, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels );
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
+        //glGenerateMipmap( GL_TEXTURE_2D );
+        glBindTexture( GL_TEXTURE_2D, 0 );
+        delete[] pixels;
+    }
+    if ( ( pixels = ChargerImage( "textures/soleil.bmp", largeur, hauteur ) ) != NULL )
+    {
+        glGenTextures( 1, &Etat::textureSOLEIL );
+        glBindTexture( GL_TEXTURE_2D, Etat::textureSOLEIL );
         glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, largeur, hauteur, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels );
         glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
         glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
@@ -508,6 +544,9 @@ void afficherModele()
     default: glBindTexture( GL_TEXTURE_2D, 0 ); break;
     case 1: glBindTexture( GL_TEXTURE_2D, Etat::textureOISEAU ); break;
     case 2: glBindTexture( GL_TEXTURE_2D, Etat::textureFLOCON ); break;
+    case 3: glBindTexture( GL_TEXTURE_2D, Etat::textureMARIO ); break;
+    case 4: glBindTexture( GL_TEXTURE_2D, Etat::textureSMWMARIO ); break;
+    case 5: glBindTexture( GL_TEXTURE_2D, Etat::textureSOLEIL ); break;
     }
 
     // tracer le résultat de la rétroaction
@@ -699,7 +738,7 @@ void FenetreTP::clavier( TP_touche touche )
         break;
 
     case TP_t: // Changer la texture utilisée: 0-aucune, 1-oiseau, 2-flocon
-        if ( ++Etat::texnumero > 2 ) Etat::texnumero = 0;
+        if ( ++Etat::texnumero > 5 ) Etat::texnumero = 0;
         std::cout << " Etat::texnumero=" << Etat::texnumero << std::endl;
         break;
 
