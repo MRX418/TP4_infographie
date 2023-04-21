@@ -50,7 +50,7 @@ void main( void )
         vitesseMod = vec3( mix( -25.0, 25.0, aleatoire() ),   // entre -25 et 25
                            mix( -25.0, 25.0, aleatoire() ),   // entre -25 et 25
                            mix(  25.0, 50.0, aleatoire() ) ); // entre  25 et 50
-        //vitesseMod = vec3( 0.0, 30.0, 50.0 );
+        // vitesseMod = vec3( 0.0, 30.0, 50.0 ); //tester collision
 
         // nouveau temps de vie (pseudo) aléatoire
         tempsDeVieRestantMod = mix( 0.0, tempsDeVieMax, aleatoire()); // à modifier pour une valeur entre 0 et tempsDeVieMax secondes
@@ -85,7 +85,7 @@ void main( void )
         }
         // gérer la ccollision avec le sol
         // hauteur minimale à laquelle une collision avec le plancher survient
-        const float hauteurPlancher = 3.0;
+        float hauteurPlancher = 0.5 * pointsize;
          if ( VertexMod.z <= hauteurPlancher ) { 
           vitesseMod = reflect( vitesse , vec3(0, 0, 1) );
          }
