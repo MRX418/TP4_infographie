@@ -49,8 +49,9 @@ void main()
     for ( int i = 0 ; i < 4 ; ++i )
     {
         // on positionne successivement aux quatre coins
-        vec2 decalage = coins[i]; 
+        vec2 decalage = vec2(coins[i].x, coins[i].y) ; 
 
+        coins[i].x *= AttribsIn[0].sens; 
         AttribsOut.texCoord = coins[i] + vec2( 0.5, 0.5 ); // on utilise coins[] pour définir des coordonnées de texture
 
         // assigner la position du point
@@ -64,31 +65,32 @@ void main()
 
         // assigner la couleur courante
         AttribsOut.couleur = AttribsIn[0].couleur;
+
+        // textures
         switch (texnumero){
-            case 1: 
+            case 1: // oiseau
                 nlutins = 16.0; 
             break;
-            case 3:
+            case 3: // mario
                 nlutins = 12.0;  
             break;
-            case 4:
+            case 4: // smw_mario
                 nlutins = 20.0; 
             break;
-            case 2:
-            case 5:  
+            case 2: // flocon
+            case 5: // soleil
                 if(AttribsIn[0].hauteur >= hauteurInerte){
-                    decalage = rotationCentre(coins[i], 6.0 * AttribsIn[0].tempsDeVieRestant);
+                    decalage = rotationCentre(decalage, 6.0 * AttribsIn[0].tempsDeVieRestant);
                 } 
             break;
         }
 
-        if(texnumero !=2 && texnumero !=5){
+        if(texnumero !=2 && texnumero != 5){// mario, smw_mario et oiseau
             if(AttribsIn[0].hauteur >= hauteurInerte){
-                    num = int ( mod ( 18.0 * AttribsIn[0].tempsDeVieRestant , nlutins ) );// 18 Hz
+                num = int ( mod ( 18.0 * AttribsIn[0].tempsDeVieRestant , nlutins ) );// 18 Hz
             }  
             AttribsOut.texCoord.s += num;
             AttribsOut.texCoord.s /= nlutins ;
-            AttribsOut.texCoord.s *= AttribsIn[0].sens;
         }
 
         AttribsOut.couleur.a = clamp(AttribsIn[0].tempsDeVieRestant, 0  , 1);

@@ -90,7 +90,7 @@ void main( void )
         // hauteur minimale à laquelle une collision avec le plancher survient
         float hauteurPlancher = 0.5 * pointsize;
         if ( VertexMod.z <= hauteurPlancher ) { 
-            vitesseMod = reflect( vitesse , vec3(0, 0, 1) );
+            vitesseMod.z = hauteurPlancher;
             vitesseMod /= 2;
         }
         

@@ -38,6 +38,6 @@ void main( void )
     // assigner la taille des points (en pixels)
     gl_PointSize = pointsize;
 
-    AttribsOut.sens = sign((matrModel * matrVisu* vec4(vitesse, 0)).x);
-    AttribsOut.hauteur = (matrModel* Vertex).z;
+    AttribsOut.sens = sign((matrModel * matrVisu* vec4(vitesse, 0)).x); //empecher les textures de toujours pointer en avant
+    AttribsOut.hauteur = (matrModel* Vertex).z; //l'hauteur de la particule
 }
